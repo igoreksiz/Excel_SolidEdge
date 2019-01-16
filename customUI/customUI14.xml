@@ -1,0 +1,262 @@
+<!--RibbonX Visual Designer 2.31 for Microsoft Excel CustomUI14 . XML Code produced on 2018/01/09-->
+<customUI  xmlns="http://schemas.microsoft.com/office/2009/07/customui" >
+	<ribbon >
+		<tabs >
+			<tab
+				id="Domisoft"
+				label="Domisoft">
+				<group
+					id="domi_gp_SE"
+					label="SolidEdge">
+					<splitButton
+						id="Splitbutton1"
+						size="large">
+						<button
+							id="se_open_dft"
+							imageMso="ExportSavedExports"
+							label="Open Selected DFT"
+							screentip="打开所选专用号对应的DFT文档, 支持多选."
+							onAction="SE_ACT_OPEN"/>
+						<menu
+							id="Menu1"
+							label="Menu1">
+							<button
+								id="se_open_revmgr"
+								imageMso="AfterInsert"
+								label="Open Dummy"
+								screentip="打开当前选择的组件的父级装配"
+								onAction="SE_ACT_OPEN"/>
+							<button
+								id="se_open_pdf"
+								imageMso="OpenAttachedMasterPage"
+								label="Open Selected PDF"
+								screentip="打开以所选专用号命名的PDF文件"
+								onAction="SE_ACT_OPEN"/>
+						</menu >
+					</splitButton >
+					<splitButton
+						id="Splitbutton2"
+						size="large">
+						<button
+							id="se_print_pdf"
+							imageMso="SaveAsPDF"
+							label="PDF Active DFT"
+							screentip="将当前打开的DFT打印为PDF"
+							onAction="SE_ACT_PDF"/>
+						<menu
+							id="Menu2"
+							label="Menu2">
+							<button
+								id="se_print_alldft"
+								imageMso="ViewsMoreLowerPane"
+								label="PDF All Open DFT"
+								screentip="将所有打开的DFT文档打印为PDF"
+								onAction="SE_ACT_PDF"/>
+							<button
+								id="se_print_all_DXF"
+								imageMso="ContactsNewItemMenu"
+								label="DXF All Open DFT"
+								screentip="将所有打开的DFT文档另存为DXF"
+								onAction="SE_ACT_PDF"/>
+							<button
+								id="se_print_all_DWG"
+								imageMso="CopyAllRules"
+								label="DWG All Open DFT"
+								screentip="将所有打开的DFT文档另存为DWG"
+								onAction="SE_ACT_PDF"/>
+						</menu >
+					</splitButton >
+					<splitButton
+						id="Splitbutton3"
+						size="large">
+						<button
+							id="Button14"
+							imageMso="GroupTaskOutcomesNew"
+							label="Title Block Manager"
+							onAction="SE_ACT_TB"/>
+						<menu
+							id="Menu3"
+							label="Menu2">
+							<button
+								id="Button11"
+								imageMso="GroupTaskOutcomesNew"
+								label="Title Block Manager"
+								onAction="SE_ACT_TB"/>
+							<button
+								id="Button12"
+								imageMso="Export"
+								label="Copy title block"
+								onAction="SE_ACT_TB"/>
+							<button
+								id="Button13"
+								imageMso="AddRulesMenu"
+								label="Update title block"
+								onAction="SE_ACT_TB"/>
+						</menu >
+					</splitButton >
+					<splitButton
+						id="Splitbutton4"
+						size="large">
+						<button
+							id="bt_st_close1"
+							imageMso="CancelEditing"
+							label="Save+Close all DFT"
+							screentip="关闭所有打开的DFT文档, 同时保存"
+							onAction="SE_ACT_CLOSE"/>
+						<menu
+							id="Menu4"
+							label="Menu2">
+							<button
+								id="bt_st_close2"
+								imageMso="DeleteTable"
+								label="Close all DFT (discard changes)"
+								screentip="关闭所有打开的DFT文档,放弃保存"
+								onAction="SE_ACT_CLOSE"/>
+						</menu >
+					</splitButton >
+					<splitButton
+						id="Splitbutton5"
+						size="large">
+						<button
+							id="bt_st_print1"
+							imageMso="CatalogMergeMergeToPrinter"
+							label="Printing Center"
+							screentip="打印和格式转换中心"
+							onAction="SE_ACT_PRINT"/>
+						<menu
+							id="Menu5"
+							label="Menu2">
+							<button
+								id="bt_st_print2"
+								imageMso="ChangePrinter"
+								label="Paper selected DFT"
+								onAction="SE_ACT_PRINT"/>
+							<button
+								id="bt_st_print3"
+								imageMso="FilePrintQuick"
+								label="Paper selected PDF"
+								onAction="SE_ACT_PRINT"/>
+						</menu >
+					</splitButton >
+					<button
+						id="bt_se_spec"
+						imageMso="AutoFormatGallery"
+						label="Specification"
+						size="large"
+						onAction="SE_ACT_SPEC"/>
+					<splitButton
+						id="Splitbutton6"
+						size="large">
+						<button
+							id="bt_balloon_delete"
+							imageMso="ControlPropertySecondaryFieldRemoveBinding"
+							label="Balloon Delete"
+							screentip="把所有指定的球标删除"
+							onAction="SE_ACT_BALLOON"/>
+						<menu
+							id="Menu6"
+							label="Menu2">
+							<button
+								id="bt_balloon_edit"
+								imageMso="CurrentViewGallery"
+								label="Balloon Edit"
+								screentip="修改系统自动生成的球标号为指定字母"
+								onAction="SE_ACT_BALLOON"/>
+						</menu >
+					</splitButton >
+					<separator  id="Separator1" />
+					<button
+						id="Button15"
+						imageMso="AddInCommandsMenu"
+						label="Config"
+						size="large"
+						onAction="SE_ACT_CONFIG"/>
+				</group >
+				<group
+					id="domi_gp_bom"
+					label="BOM Tool">
+					<button
+						id="bt_bom_switchcell"
+						imageMso="DistributionListUpdateMembers"
+						label="Switch Cell"
+						screentip="将选中行的内容两两上下交换"
+						size="large"
+						onAction="DOMI_BOM_ACT"/>
+					<button
+						id="bt_bom_VerticalMerge"
+						imageMso="AccessListCustom"
+						label="Vertical Merge"
+						screentip="将选定区域的单元格按列合并"
+						size="large"
+						onAction="DOMI_BOM_ACT"/>
+					<button
+						id="bt_bom_addraw"
+						imageMso="CellsInsertDialog"
+						label="Add Raw Material"
+						screentip="在BOM中为选定的钣金增加原材料"
+						size="large"
+						onAction="DOMI_BOM_ACT"/>
+					<button
+						id="bt_bom_CheckUsage"
+						imageMso="AccessFormWizard"
+						label="Check Usage"
+						screentip="检查原材料用量"
+						size="large"
+						onAction="DOMI_BOM_ACT"/>
+					<button
+						id="bt_bom_Format_K3bom"
+						imageMso="AccessThemesGallery"
+						label="Format K3 Exported BOM"
+						screentip="格式化K3导出的BOM"
+						size="large"
+						onAction="DOMI_BOM_ACT"/>
+					<button
+						id="bt_bom_Get_cutsize"
+						imageMso="AdpDiagramShowRelationshipLabels"
+						label="Get Cut Size"
+						screentip="获取钣金展开尺寸, 需要SoledEdge处于打开状态"
+						size="large"
+						onAction="DOMI_BOM_ACT"/>
+					<splitButton
+						id="Splitbutton7"
+						size="large">
+						<button
+							id="Apply_BOM_CODE"
+							imageMso="ControlLayoutStacked"
+							label="专用号申请表"
+							screentip="打开专用号申请表模版"
+							onAction="OPEN_TEMPLATE_ACT"/>
+						<menu
+							id="Menu7"
+							label="Menu2">
+							<button
+								id="Apply_BOM_DESP"
+								imageMso="CrossFunctionalFlowchartInsertSwimlane"
+								label="主数据更改申请表"
+								screentip="打开主数据更改申请表模版.(修改物料描述)"
+								onAction="OPEN_TEMPLATE_ACT"/>
+							<button
+								id="Apply_BOM_EDIT"
+								imageMso="CrossReferenceInsert"
+								label="BOM更改单"
+								screentip="打开BOM更改单模版"
+								onAction="OPEN_TEMPLATE_ACT"/>
+							<button
+								id="Apply_PRODUCT_CODE"
+								imageMso="CreateReport"
+								label="成品编码申请表"
+								screentip="打开成品编码申请表模版"
+								onAction="OPEN_TEMPLATE_ACT"/>
+							<button
+								id="Apply_PRODUCT_LABLE"
+								imageMso="DataGraphicsGalleryVisio"
+								label="冷柜铭牌模版"
+								screentip="打开冷柜铭牌模版"
+								onAction="OPEN_TEMPLATE_ACT"/>
+						</menu >
+					</splitButton >
+				</group >
+			</tab >
+		</tabs >
+	</ribbon >
+</customUI >
