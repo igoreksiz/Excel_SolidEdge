@@ -204,7 +204,7 @@ For i = 1 To Docs.Count
         seApp.Application.DisplayAlerts = False
         seDFT.SaveAs gname, False, False
         seApp.Application.DisplayAlerts = True
-        Call adjustCAD(gname)
+ '       Call adjustCAD(gname)
     End If
 Next
 

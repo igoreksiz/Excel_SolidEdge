@@ -1,6 +1,4 @@
 Attribute VB_Name = "mdl_0ffice_events"
-
-
 Public Sub SE_ACT_OPEN(control As IRibbonControl)
     Select Case control.ID
         Case "se_open_dft"

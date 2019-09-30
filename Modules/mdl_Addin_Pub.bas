@@ -40,6 +40,7 @@ Public Type BlkId
     paint_std As Integer
     thk As Integer
     tol As Integer
+    qhc_ver As Integer
 End Type
  
 Public Enum SeDftVerBlockId
@@ -64,7 +65,7 @@ Public Enum LegacySeDftBlockId
     approve_date = 13
 End Enum
 Public Const VBA_name = "Dominic"
-Public Const Defualt_DB = "\\ccnsif0g\sdc\Refrigeration\Structure Design\Addons\domisoft.mdb"
+Public Const Defualt_DB = "\\CCNSIA1A\SEParts\Admin\Addons\domisoft.mdb"
 Public Function IsFileExists(ByVal strFileName As String) As Boolean
     If Dir(strFileName, 16) <> Empty Then
         IsFileExists = True
@@ -89,3 +90,10 @@ Public Function GetFileSize(filespec)
 End Function
 
 
+'! = Single  单精度小数……因为 ! 笔画只是1竖单笔画，所以记住为【单精度】
+'# = Double 双精度小数 …因为 # 笔画是2横2竖，所以记住为【双精度】
+'@ = Currency 货币型4位小数 …现实中大家也常用@符号代表价格、单价，所以记住为【货币型小数】
+'$ = String 文本字符串 …因为 String第1个字母是 S 所以记住为【美元s=String 文本字符串】
+'
+'% = Integer 整数 ……因为 % 是百分比符号我们把它联想为较少的整数【整型数值】
+'& = Long 整数  ……因为 & 可以看做是Long首字母L的花体字 所以记住为【长整型数值】

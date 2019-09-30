@@ -39,7 +39,16 @@ For i = LBound(p) To UBound(p)
 
     myPDFstore = p(i)
     
-    filename = myPDFstore & "\" & uRg.Cells(1, 1).Value & ".pdf"
+    filename = Trim(uRg.Cells(1, 1).Value)
+    
+    If InStr(1, filename, Chr(10), vbTextCompare) > 0 Then
+        filename = Split(filename, Chr(10))(0)           ' TODO 一格里含有多个文件名
+    End If
+    If Len(filename) = 8 And Left(filename, 1) = 8 Then filename = "00" & filename    '解决00问题
+    
+    filename = myPDFstore & "\" & filename & ".pdf"
+    
+    
     
     If IsFileExists(filename) Then
         Excel.Application.Cursor = xlWait '修改鼠标为等待

@@ -47,7 +47,7 @@ Public Sub switchCell()
         uRg.NumberFormat = nf
     End If
 End Sub
-Private Sub demoteLvl()
+Public Sub demoteLvl()
     Dim oSht As Excel.Worksheet
     Set oSht = Excel.ActiveSheet
     
@@ -200,7 +200,7 @@ Set asht = Excel.ActiveSheet
 Dim i As Integer
 
 For i = 1 To asht.UsedRange.Rows.Count
-    If asht.Cells(i, 1).Text = "层级" Or asht.Cells(i, 1).Text = "层次" Then
+    If asht.Cells(i, 1).Text = "层级" Or asht.Cells(i, 1).Text = "层次" Or asht.Cells(i, 2).Text = "展开层" Then
         ColDef.DefRow = i
         Exit For
     End If
@@ -213,17 +213,17 @@ If ColDef.DefRow = 0 Then Exit Sub
 
 For i = 1 To asht.UsedRange.Columns.Count
 Select Case asht.Cells(ColDef.DefRow, i).Text
-    Case "子项物料代码", "专用号", "物料代码"
+    Case "子项物料代码", "专用号", "物料代码", "对象标识"
         ColDef.CodeCol = i
-    Case "物料名称", "物料描述"
+    Case "物料名称", "物料描述", "对象描述"
         ColDef.DespCol = i
-    Case "物料属性", "属性"
+    Case "物料属性", "属性", "物料类型"
         ColDef.TypeCol = i
-    Case "单位"
+    Case "单位", "组件单位"
         ColDef.UnitCol = i
-    Case "数量", "单位用量", "用量"
+    Case "数量", "单位用量", "用量", "组件数量(CUn)"
         ColDef.QtyCol = i
-    Case "工位"
+    Case "工位", "排序字符串"
         ColDef.LocCol = i
 End Select
 
@@ -275,30 +275,42 @@ For i = UBound(s) - 1 To LBound(s) Step -1
     Next j
 Next i
 
-Dim T As String
-T = Round(s(LBound(s)), 1)
+Dim t As String
+t = Round(s(LBound(s)), 1)
 
-Select Case T
+Select Case t
     Case "0.5", ".5", 0.5
-        getRawShtNo = "0000180451"
+        getRawShtNo = "0087500182"
     Case "0.6", ".6", 0.6
-        getRawShtNo = "0000180476"
+        getRawShtNo = "0087500185"
     Case "0.7", ".7", 0.7
-        getRawShtNo = "0000180477"
+        getRawShtNo = "0087500186"
     Case "0.8", ".8", 0.8
-        getRawShtNo = "0000180503"
+        getRawShtNo = "0087500191"
     Case "1.0", "1", 1
-        getRawShtNo = "0000180520"
+        getRawShtNo = "0087500284"
     Case "1.2", 1.2
-        getRawShtNo = "0000180586"
+        getRawShtNo = "0087500193"
     Case "1.5", 1.5
-        getRawShtNo = "0000180540"
+        getRawShtNo = "0087500188"
     Case "2.0", "2", 2
-        getRawShtNo = "0000180544"
+        getRawShtNo = "0087500190"
     Case Else
-        Debug.Print "厚度不存在:" & T
+        Debug.Print "厚度不存在:" & t
         getRawShtNo = ""
 End Select
+
+'87500182    热锌板 0.5*1250
+'87500280    热锌板 0.5*1536
+'87500185    热锌板 0.6*1250 不钝化首钢
+'87500186    热锌板 0.7*1250
+'87500282    热锌板 0.7*1400
+'87500191    热锌板 0.8*1250
+'87500284    热锌板 1.0*1300
+'87500193    热锌板 1.2*1250
+'87500188    热锌板 1.5*1250
+'87500190    热锌板 2.0*1250
+
 End Function
 Private Function getRawShtDesp(partnumber As String) As String
     Select Case partnumber
@@ -326,11 +338,11 @@ End Function
 Private Function CalcShtWT(r As String) As Double
 Dim L As Double
 Dim h As Double
-Dim T As Double
+Dim t As Double
 Dim v As Variant
 
-r = Replace(r, "x", "*")
-r = Replace(r, "X", "*")
+'r = Replace(r, "x", "*")
+'r = Replace(r, "X", "*")
 
 Dim uv As Variant
 uv = Split(r, " ")
@@ -353,9 +365,9 @@ Dim s As Variant
 s = Split(v, "*")
 L = s(LBound(s))
 h = s(LBound(s) + 1)
-T = s(LBound(s) + 2)
+t = s(LBound(s) + 2)
 Dim rez As Double
-rez = L * h * T * 7.84 / 0.9 / 1000000
+rez = L * h * t * 7.84 / 0.9 / 1000000
 If rez < 0.01 Then
     CalcShtWT = 0.01
 Else
@@ -365,10 +377,10 @@ End Function
 Private Function CalcPdWT(r As String) As Double
 Dim L As Double
 Dim h As Double
-Dim T As Double
+Dim t As Double
 Dim v As Variant
-r = Replace(r, "x", "*")
-r = Replace(r, "X", "*")
+'r = Replace(r, "x", "*")
+'r = Replace(r, "X", "*")
 Dim uv As Variant
 uv = Split(r, " ")
 
@@ -387,7 +399,7 @@ Dim s As Variant
  s = Split(v, "*")
 L = s(LBound(s))
 h = s(LBound(s) + 1)
-T = s(LBound(s) + 2)
+t = s(LBound(s) + 2)
 Dim rez As Double
 rez = L * h * 2 * 0.18 / 0.9 / 1000000  '白色粉末 0.9, 特殊粉末0.5
 If rez < 0.01 Then
@@ -531,7 +543,7 @@ For i = sht.UsedRange.Columns.Count To 1 Step -1
     Select Case sht.Cells(ColDef.DefRow, i).Text
     Case "备注3", "备注2", "备注1", "备注", "是否禁用", "使用状态", "使用状态", "关键件标志", "使用状态", _
         "发料仓库", "工序", "工序号", "子项类型", "坯料数", "坯料尺寸", "位置号", "损耗率(%)", "计划百分比(%)", _
-        "用量", "图号", "规格型号", "直接材料", "直接人工", "变动制造费用", "固定制造费用", "委外材料费", "委外加工费", ""
+        "用量", "图号", "规格型号", "直接材料", "直接人工", "变动制造费用", "固定制造费用", "委外材料费", "委外加工费", "项目编号", "特定工厂的物料状态"
         sht.Columns.Item(i).Delete
     End Select
 Next
@@ -547,9 +559,9 @@ End If
 For i = 1 To sht.UsedRange.Columns.Count
     sht.Columns(i).AutoFit
     Select Case sht.Cells(ColDef.DefRow, i).Text
-        Case "层次", "物料属性"
+        Case "层次", "物料属性", "展开层", "对象描述"
             sht.Columns(i).HorizontalAlignment = xlLeft
-        Case "子项物料代码", "单位", "单位用量", "工位"
+        Case "子项物料代码", "单位", "单位用量", "工位", "对象标识", "组件数量(CUn)", "组件单位", "物料类型", "排序字符串"
             sht.Columns(i).HorizontalAlignment = xlCenter
     End Select
 Next
@@ -581,21 +593,48 @@ fmtCds.Interior.Color = RGB(235, 241, 222)
 fmtCds.StopIfTrue = False
 
 '调整用量小数位
-For i = ColDef.DefRow + 1 To sht.UsedRange.Rows.Count
-    If sht.Cells(i, ColDef.LvlCol).Text = "" And sht.Cells(i, ColDef.CodeCol).Text = "" Then Exit Sub
-    
-    
-    If InStr(1, sht.Cells(i, ColDef.QtyCol).Text, ".0000", vbTextCompare) Then
-            sht.Cells(i, ColDef.QtyCol).Value = Replace(sht.Cells(i, ColDef.QtyCol).Text, ".0000", "", , , vbTextCompare)
-    Else
-        If Len(Trim(sht.Cells(i, ColDef.QtyCol).Text)) > 0 Then
-            If CDbl(sht.Cells(i, ColDef.QtyCol).Text) <> Int(CDbl(sht.Cells(i, ColDef.QtyCol).Text)) Then
-                sht.Cells(i, ColDef.QtyCol).Value = Round(CDbl(sht.Cells(i, ColDef.QtyCol).Text), 2)
+If sht.Cells(ColDef.DefRow, ColDef.QtyCol).Text = "组件数量(CUn)" Then
+    Dim hCode As String
+    For i = ColDef.DefRow + 1 To sht.UsedRange.Rows.Count
+        hCode = sht.Cells(i, ColDef.CodeCol).Text
+        If Left(hCode, 1) = "H" Then
+            sht.Cells(i, ColDef.CodeCol).Value = "'" & Right(hCode, Len(hCode) - 1)
+        End If
+        Select Case sht.Cells(i, ColDef.TypeCol).Text
+            Case "HALB"
+                sht.Cells(i, ColDef.TypeCol).Value = "自制"
+            Case "ROH"
+                sht.Cells(i, ColDef.TypeCol).Value = "外购"
+            Case "LEER"
+                sht.Cells(i, ColDef.TypeCol).Value = "特征类"
+        End Select
+        
+        Select Case sht.Cells(i, ColDef.UnitCol).Text
+            Case "KG"
+                sht.Cells(i, ColDef.UnitCol).Value = "公斤"
+            Case "M"
+                sht.Cells(i, ColDef.UnitCol).Value = "米"
+        End Select
+    Next
+Else
+    For i = ColDef.DefRow + 1 To sht.UsedRange.Rows.Count
+        If sht.Cells(i, ColDef.LvlCol).Text = "" And sht.Cells(i, ColDef.CodeCol).Text = "" Then Exit Sub
+        
+        
+        If InStr(1, sht.Cells(i, ColDef.QtyCol).Text, ".0000", vbTextCompare) Then
+                sht.Cells(i, ColDef.QtyCol).Value = Replace(sht.Cells(i, ColDef.QtyCol).Text, ".0000", "", , , vbTextCompare)
+        Else
+            If Len(Trim(sht.Cells(i, ColDef.QtyCol).Text)) > 0 Then
+                If CDbl(sht.Cells(i, ColDef.QtyCol).Text) <> Int(CDbl(sht.Cells(i, ColDef.QtyCol).Text)) Then
+                    sht.Cells(i, ColDef.QtyCol).Value = Round(CDbl(sht.Cells(i, ColDef.QtyCol).Text), 2)
+                End If
             End If
         End If
-    End If
-Next
+    Next
+End If
 
+'开启AutoFilter
+sht.Rows(ColDef.DefRow).AutoFilter
 
 Application.EnableEvents = True '恢复触发事件
 Application.Calculation = xlCalculationAutomatic    '自动重算
@@ -878,3 +917,52 @@ For i = 8 To 56
     asht.Cells(i, 1).Value = getSubLevel(CStr(asht.Cells(i, 1).Text))
 Next
 End Sub
+Public Sub CheckBOM()
+
+Dim sht As Excel.Worksheet
+
+If Excel.ActiveSheet Is Nothing Then Exit Sub
+Set sht = Excel.ActiveSheet
+
+Call GetBomColumn
+
+Dim i As Integer
+Dim j As Integer
+Dim haveTZL As Boolean
+
+
+If Not isThisSheetRawBom(sht) Then Exit Sub
+
+For i = ColDef.DefRow + 1 To sht.UsedRange.Rows.Count
+    Select Case sht.Cells(i, ColDef.TypeCol).Text
+    Case "特征类"
+        If sht.Cells(getUpLevelRow(i), ColDef.TypeCol).Text <> "配置类" Then
+            Debug.Print "第" & i & "行, 存在错误: 特征类上一级不是配置类"
+        End If
+        
+    Case "配置类"
+        j = i
+        haveTZL = False
+        
+        Do Until sht.Cells(j, ColDef.LvlCol).Text = sht.Cells(i, ColDef.LvlCol).Text
+            j = j + 1
+            If j > sht.UsedRange.Rows.Count Then Exit Sub
+            If sht.Cells(j, ColDef.TypeCol).Text = "特征类" Then
+                haveTZL = True
+            End If
+        Loop
+        
+        If haveTZL = False Then
+            Debug.Print "第" & i & "行, 存在错误: 配置类下一级无特征类"
+        End If
+    End Select
+Next
+
+End Sub
+Public Function getWeight(str As String)
+    If InStr(1, str, "未喷粉", vbTextCompare) > 1 Then getWeight = CalcShtWT(str)
+    If InStr(1, str, "已喷粉", vbTextCompare) > 1 Then getWeight = CalcPdWT(str)
+    If InStr(1, str, "热锌板", vbTextCompare) > 1 And InStr(1, str, "已喷粉", vbTextCompare) < 1 Then getWeight = CalcShtWT(str)
+End Function
+
+
