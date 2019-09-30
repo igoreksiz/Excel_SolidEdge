@@ -77,6 +77,14 @@ Private Sub approver_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
 cb_approver.Text = GetSetting("Domisoft", "TBM_SE", "Default_Approver", "")
 End Sub
 
+Private Sub CommandButton6_Click()
+Dim str As String
+str = version.Text
+str = CStr(CInt(str) + 1)
+If Len(str) = 1 Then str = "0" & str
+version.Text = str
+End Sub
+
 Private Sub UserForm_Initialize()
 If seApp Is Nothing Then Call Conn2se
 
@@ -105,6 +113,7 @@ For i = 1 To seDFT.ActiveSheet.BlockOccurrences.Count
 Next
 
 For i = 1 To seLbs.Count
+'Debug.Print getUnicode(seLbs.Item(i).Name)
     Select Case seLbs.Item(i).Name
         Case "型号/项目名称"
             SeDftBlockId.Model = i
@@ -134,6 +143,8 @@ For i = 1 To seLbs.Count
             SeDftBlockId.review_date = i
         Case "批准日期"
             SeDftBlockId.approve_date = i
+        Case "版本"
+            SeDftBlockId.qhc_ver = i
     End Select
 Next
 
@@ -148,6 +159,16 @@ Call loadLists
 seDocPath.Caption = seDFT.FullName
 
 End Sub
+
+Private Function getUnicode(ByVal s As String)
+    Dim arr() As Byte
+    arr = s
+    Dim t As String
+    For i = 0 To UBound(arr)
+        t = t & " \u" & VBA.Hex(arr(i))
+    Next i
+    getUnicode = t
+End Function
 Private Sub loadDefault()
 If cb_designer.Text = "" Or cb_designer.Text = "-" Then cb_designer.Text = GetSetting("Domisoft", "TBM_SE", "Default_Designer", "")
 If cb_reviewer.Text = "" Or cb_reviewer.Text = "-" Then cb_reviewer.Text = GetSetting("Domisoft", "TBM_SE", "Default_Reviewer", "")
@@ -155,6 +176,7 @@ If cb_approver.Text = "" Or cb_approver.Text = "-" Then cb_approver.Text = GetSe
 If cb_design_date.Text = "YYYY.MM.DD" Or cb_design_date.Text = "" Or cb_design_date.Text = "2016.11.19" Then cb_design_date.Text = qDate(VBA.Date)
 If cb_review_date.Text = "YYYY.MM.DD" Or cb_review_date.Text = "" Or cb_review_date.Text = "2016.11.18" Then cb_review_date.Text = qDate(VBA.Date)
 If cb_approve_date.Text = "YYYY.MM.DD" Or cb_approve_date.Text = "" Or cb_approve_date.Text = "2016.11.18" Then cb_approve_date.Text = qDate(VBA.Date)
+If version.Text = "" Then version.Text = "00"
 End Sub
 Private Sub loadLists()
 dbPath = GetSetting("Domisoft", "Config", "Spec_db_path", "")
@@ -208,6 +230,7 @@ cb_reviewer.Text = seLbs.Item(SeDftBlockId.reviewer).Value
 cb_review_date.Text = seLbs.Item(SeDftBlockId.review_date).Value
 cb_approver.Text = seLbs.Item(SeDftBlockId.approver).Value
 cb_approve_date.Text = seLbs.Item(SeDftBlockId.approve_date).Value
+version.Text = seLbs.Item(SeDftBlockId.qhc_ver).Value
 'add ver here
 End Sub
 Private Sub writeToActiveDocument()
@@ -222,6 +245,7 @@ seLbs.Item(SeDftBlockId.reviewer).Value = Trim(cb_reviewer.Text)
 seLbs.Item(SeDftBlockId.review_date).Value = Trim(cb_review_date.Text)
 seLbs.Item(SeDftBlockId.approver).Value = Trim(cb_approver.Text)
 seLbs.Item(SeDftBlockId.approve_date).Value = Trim(cb_approve_date.Text)
+seLbs.Item(SeDftBlockId.qhc_ver).Value = Trim(version.Text)
 End Sub
 
 '=====================Legacy Template=========================
@@ -230,7 +254,7 @@ cb_name_cn.Text = seLbs.Item(LegacySeDftBlockId.name_cn).Value
 cb_model_no.Text = seLbs.Item(LegacySeDftBlockId.Model).Value
 cb_material.Text = seLbs.Item(LegacySeDftBlockId.material).Value
 cb_weight.Text = seLbs.Item(LegacySeDftBlockId.weight).Value
-'version.Text = seLBS.Item(LegacySeDftBlockId.version).Value
+version.Text = seLbs.Item(LegacySeDftBlockId.version).Value
 cb_designer.Text = seLbs.Item(LegacySeDftBlockId.designer).Value
 cb_design_date.Text = seLbs.Item(LegacySeDftBlockId.design_date).Value
 cb_reviewer.Text = seLbs.Item(LegacySeDftBlockId.reviewer).Value
@@ -243,7 +267,7 @@ seLbs.Item(LegacySeDftBlockId.name_cn).Value = Trim(cb_name_cn.Text)
 seLbs.Item(LegacySeDftBlockId.Model).Value = Trim(cb_model_no.Text)
 seLbs.Item(LegacySeDftBlockId.material).Value = Trim(cb_material.Text)
 seLbs.Item(LegacySeDftBlockId.weight).Value = Trim(cb_weight.Text)
-'seLBS.Item(LegacySeDftBlockId.version).Value = Trim(version.Text)
+seLbs.Item(LegacySeDftBlockId.version).Value = Trim(version.Text)
 seLbs.Item(LegacySeDftBlockId.designer).Value = Trim(cb_designer.Text)
 seLbs.Item(LegacySeDftBlockId.design_date).Value = Trim(cb_design_date.Text)
 seLbs.Item(LegacySeDftBlockId.reviewer).Value = Trim(cb_reviewer.Text)

@@ -157,7 +157,7 @@ For i = 1 To dft.ModelLinks.Count
 Next i
 
 If smdl Is Nothing Then
-    ReplacePara = outstr
+    ReplacePara = str
     Exit Function
 End If
 

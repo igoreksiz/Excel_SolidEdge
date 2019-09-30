@@ -24,8 +24,11 @@ ss = ss & "|" & pdf_store.list(i)
 Next
 Call SaveSetting("Domisoft", "Config", "PDF_Store", Right(ss, Len(ss) - 1))
 Call SaveSetting("Domisoft", "Config", "Spec_db_path", spec_db_path.Text)
-Call seApp.SetGlobalParameter(seApplicationGlobalLinkMgmt, LinkMgrPath.Value)
-
+If seApp Is Nothing Then
+'
+Else
+    Call seApp.SetGlobalParameter(seApplicationGlobalLinkMgmt, LinkMgrPath.Value)
+End If
 Excel.Application.Cursor = xlDefault '»Ö¸´Êó±ê
 
 Application.EnableEvents = True '»Ö¸´´¥·¢ÊÂ¼þ
@@ -82,10 +85,16 @@ End Sub
 
 Private Sub UserForm_Initialize()
 seWork.Text = GetSetting("Domisoft", "Config", "SE_Working", "")
-seOutput.Text = GetSetting("Domisoft", "Config", "SE_Output", "")
+If Len(seWork.Text) = 0 Then seWork.Text = "S:\Cabinet"
 
+seOutput.Text = GetSetting("Domisoft", "Config", "SE_Output", "")
+If Len(seOutput.Text) = 0 Then seOutput.Text = "d:\workspaces"
 Dim ss As String
 ss = GetSetting("Domisoft", "Config", "PDF_Store", "")
+
+If Len(ss) = 0 Then
+    ss = "d:\workspaces|\\CCNSIA1A\SEParts\Cabinet\PDFÍ¼Ö½¿â"
+End If
 
 Dim v As Variant
 v = Split(ss, "|")
@@ -99,10 +108,9 @@ spec_db_path.AddItem Defualt_DB
 lbl_update.Caption = lbl_update.Caption & VBA.FileDateTime(Excel.AddIns.Item(VBA_name).FullName)
 
 Dim lmp As Variant
-If seApp Is Nothing Then Call Conn2se
+If seApp Is Nothing Then Exit Sub
 Call seApp.GetGlobalParameter(seApplicationGlobalLinkMgmt, lmp)
 LinkMgrPath.Text = CStr(lmp)
-LinkMgrPath.AddItem "\\CCNSIA1A\SolidEdge\LinkMgmt.txt"
-LinkMgrPath.AddItem "\\ccnsif0g\srdc\CCR\A02-Project\B07-Project_2015\P1004_E6 semi Multideck\linkMgmt.txt"
+LinkMgrPath.AddItem "\\CCNSIA1A\SEParts\Admin\Settings\LinkMgmt.txt"
 LinkMgrPath.AddItem "\\ccnsif0g\srdc\CCR\A02-Project\B06-Project_2014\Next_Gen_Service_Counter\03-engneering\12-3D_Drawings\01-model\LinkMgmt.txt"
 End Sub

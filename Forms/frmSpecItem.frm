@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 Private dbConn As ADODB.Connection
 Private dbRs As ADODB.Recordset
 Private dbRsD As ADODB.Recordset
-Private Const dbPath = "D:\LGP\Documents\code_space\domisoft.mdb"
+Private dbPath As String
 
 Private Sub CommandButton1_Click()
 If tList.ListIndex = -1 Then Exit Sub
@@ -103,6 +103,7 @@ End If
 End Sub
 
 Private Sub UserForm_Initialize()
+dbPath = GetSetting("Domisoft", "Config", "Spec_db_path", "")
 
 Select Case LCase(Environ("UserName"))
     Case "ccl100100"
